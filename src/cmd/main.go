@@ -7,16 +7,17 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"cart/internal/apiserver/apiserver"
-	"cart/internal/bot/configs"
+	"cart/src/internal/apiserver/apiserver"
+	tgserver "cart/src/internal/bot"
+	"cart/src/internal/bot/configs"
 )
 
 var sconfigPath string
 var bconfigPath string
 
 func init() {
-	flag.StringVar(&sconfigPath, "server-config-path", "configs/server.toml", "path to server config file")
-	flag.StringVar(&bconfigPath, "bot-config-path", "configs/bot.toml", "path to bot config file")
+	flag.StringVar(&sconfigPath, "server-config-path", "src/configs/server.toml", "path to server config file")
+	flag.StringVar(&bconfigPath, "bot-config-path", "src/configs/bot.toml", "path to bot config file")
 }
 
 func server(configPath string) {

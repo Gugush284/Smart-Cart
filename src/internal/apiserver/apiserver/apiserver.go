@@ -11,7 +11,7 @@ func Start(config *Config) error {
 		return err
 	}
 
-	srv.Logger.Info("starting api server")
+	srv.Logger.Info("Starting server")
 	srv.Logger.Debug(config.SessionKey)
 
 	return http.ListenAndServe(config.BindAddr, srv)

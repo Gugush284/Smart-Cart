@@ -5,14 +5,16 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func handler(bot *tgbotapi.BotAPI,
+func msghandler(bot *tgbotapi.BotAPI,
 	update tgbotapi.Update,
 	logger *logrus.Logger,
+	commands []string,
 ) {
 	switch update.Message.Text {
 	case "/start":
 		logger.Info("/start")
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hello!")
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Hello! Choose your goods:")
+		msg.ReplyMarkup = numericKeyboard
 		bot.Send(msg)
 
 	default:

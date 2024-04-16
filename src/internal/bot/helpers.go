@@ -1,13 +1,23 @@
 package tgbot
 
 import (
-	"cart/internal/bot/configs"
+	"cart/src/internal/bot/configs"
 	"log"
 
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 
 	"github.com/sirupsen/logrus"
 )
+
+var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("1", "1"),
+		tgbotapi.NewInlineKeyboardButtonData("2", "2"),
+		tgbotapi.NewInlineKeyboardButtonData("3", "3"),
+	),
+)
+
+//func start(config *configs.Config) *logrus.Logger
 
 func configureLogger(config *configs.Config) *logrus.Logger {
 	logger := logrus.New()
