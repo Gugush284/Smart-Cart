@@ -39,8 +39,6 @@ func Serve(
 ) {
 	logger.Info("Serve")
 
-	commands := []string{"/start"}
-
 	for update := range updates {
 		logger.Info(update)
 
@@ -48,7 +46,7 @@ func Serve(
 			logger.Info(update.Message)
 
 			if update.Message.Text != "" {
-				msghandler(bot, update, logger, commands)
+				msghandler(bot, update, logger)
 			} else {
 				msg := tgbotapi.NewMessage(update.Message.Chat.ID, "Undef")
 				bot.Send(msg)
@@ -56,8 +54,7 @@ func Serve(
 		} else if update.CallbackQuery != nil {
 			logger.Info(update.CallbackQuery)
 
-			callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
-			logger.Info(callback.Text)
+			callbackhandler(bot, update, logger)
 		}
 	}
 }
