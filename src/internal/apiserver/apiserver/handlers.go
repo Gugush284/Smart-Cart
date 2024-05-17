@@ -85,14 +85,9 @@ func (s *server) ReadyTG() http.HandlerFunc {
 }
 
 func (s *server) Ready() http.HandlerFunc {
-
-	type request struct {
-		First  int `json:"first"`
-		Second int `json:"second"`
-		Third  int `json:"third"`
-	}
-
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var req [][]int
+
 		key := strings.ReplaceAll(r.URL.Path, "/ready/", "")
 
 		id, err := strconv.Atoi(key)
@@ -111,17 +106,15 @@ func (s *server) Ready() http.HandlerFunc {
 		}
 		if str != -1 {
 			if cid[str].ready {
-				req := &request{}
+				req = Alg(req, 1, cid[str].first)
+				req = Alg(req, 2, cid[str].second)
+				req = Alg(req, 3, cid[str].third)
 
-				req.First = cid[str].first
-				req.Second = cid[str].second
-				req.Third = cid[str].third
+				s.respond(w, r, http.StatusOK, req)
 
 				//FIX delete order
 			}
 		}
-
-		s.Logger.Info(cid[str])
 
 		s.respond(w, r, http.StatusFound, nil)
 	})
