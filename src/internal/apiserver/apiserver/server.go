@@ -3,7 +3,6 @@ package apiserver
 import (
 	"net/http"
 
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -28,10 +27,10 @@ func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.router.ServeHTTP(w, r)
 }
 
-// Configuration of router ...
 func (s *server) configureRouter() {
-	s.router.Use(handlers.CORS(handlers.AllowedOrigins([]string{"*"})))
-
+	s.router.HandleFunc("/tg/{key}", s.GetGoods()).Methods("POST")
+	s.router.HandleFunc("/ready/tg/{key}", s.ReadyTG()).Methods("POST")
+	s.router.HandleFunc("/ready/{key}", s.Ready()).Methods("GET")
 }
 
 func (s *server) configureLogger(config *Config) error {

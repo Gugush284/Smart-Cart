@@ -29,13 +29,14 @@ func Start(config *configs.Config) {
 
 	updates.Clear()
 
-	Serve(bot, updates, logger)
+	Serve(bot, updates, logger, config)
 }
 
 func Serve(
 	bot *tgbotapi.BotAPI,
 	updates tgbotapi.UpdatesChannel,
 	logger *logrus.Logger,
+	config *configs.Config,
 ) {
 	logger.Info("Serve")
 
@@ -54,7 +55,7 @@ func Serve(
 		} else if update.CallbackQuery != nil {
 			logger.Info(update.CallbackQuery)
 
-			callbackhandler(bot, update, logger)
+			callbackhandler(bot, update, logger, config)
 		}
 	}
 }

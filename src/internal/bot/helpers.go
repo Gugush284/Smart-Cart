@@ -15,6 +15,9 @@ var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardButtonData("2", "2"),
 		tgbotapi.NewInlineKeyboardButtonData("3", "3"),
 	),
+	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("Ready", "Ready"),
+	),
 )
 
 //func start(config *configs.Config) *logrus.Logger
