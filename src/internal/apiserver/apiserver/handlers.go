@@ -125,7 +125,9 @@ func (s *server) GetUsers() http.HandlerFunc {
 		var id []int
 
 		for i := 0; i < len(cid); i++ {
-			id = append(id, cid[i].id)
+			if cid[i].ready {
+				id = append(id, cid[i].id)
+			}
 		}
 
 		s.respond(w, r, http.StatusFound, id)
