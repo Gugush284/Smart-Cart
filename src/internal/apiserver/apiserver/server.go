@@ -31,6 +31,7 @@ func (s *server) configureRouter() {
 	s.router.HandleFunc("/tg/{key}", s.GetGoods()).Methods("POST")
 	s.router.HandleFunc("/ready/tg/{key}", s.ReadyTG()).Methods("POST")
 	s.router.HandleFunc("/ready/{key}", s.Ready()).Methods("GET")
+	s.router.HandleFunc("/users", s.GetUsers()).Methods("GET")
 }
 
 func (s *server) configureLogger(config *Config) error {

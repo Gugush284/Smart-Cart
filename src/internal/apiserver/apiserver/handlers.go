@@ -119,3 +119,15 @@ func (s *server) Ready() http.HandlerFunc {
 		s.respond(w, r, http.StatusFound, nil)
 	})
 }
+
+func (s *server) GetUsers() http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var id []int
+
+		for i := 0; i < len(cid); i++ {
+			id = append(id, cid[i].id)
+		}
+
+		s.respond(w, r, http.StatusFound, id)
+	})
+}
