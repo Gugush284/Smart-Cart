@@ -1,7 +1,7 @@
 package tgbot
 
 import (
-	"cart/src/internal/bot/configs"
+	"tg_client/src/internal/bot/configs"
 
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 	"github.com/sirupsen/logrus"

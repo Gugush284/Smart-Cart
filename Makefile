@@ -1,10 +1,17 @@
-.PHONY: buildserver
-buildserver:
-	go build -o ./bin/server.exe -v ./src/cmd
+.PHONY: server
+server:
+	cd ./server && make
 
-.PHONY: runserver
-runserver:
-	go build -o ./bin/server.exe -v ./src/cmd
-	./bin/server.exe
+.PHONY: client
+client:
+	cd ./third_party/tg_client && make
 
-.DEFAULT_GOAL := runserver
+.PHONY: device
+device:
+	cd ./Smart-Cart-Device && make
+
+.PHONY: dtest
+dtest:
+	cd ./Smart-Cart-Device && make connect
+
+.DEFAULT_GOAL := server

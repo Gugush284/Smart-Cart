@@ -1,0 +1,3 @@
+[submodule "Smart-Cart-Device"]
+	path = Smart-Cart-Device
+	url = git@github.com:Gugush284/Smart-Cart-Device.git

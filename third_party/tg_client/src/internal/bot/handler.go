@@ -2,11 +2,11 @@ package tgbot
 
 import (
 	"bytes"
-	"cart/src/internal/bot/configs"
 	"encoding/json"
 	"log"
 	"net/http"
 	"strconv"
+	"tg_client/src/internal/bot/configs"
 
 	tgbotapi "github.com/Syfaro/telegram-bot-api"
 	"github.com/sirupsen/logrus"
