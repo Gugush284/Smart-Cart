@@ -1,3 +1,5 @@
 src/configs/*.toml
 bin/*
 !bin/.gitkeep
+*.mod
+*.sum
