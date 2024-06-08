@@ -59,6 +59,14 @@ func callbackhandler(bot *tgbotapi.BotAPI,
 		m.ID = 5
 	case "6":
 		m.ID = 6
+	case "7":
+		m.ID = 7
+	case "8":
+		m.ID = 8
+	case "9":
+		m.ID = 9
+	case "10":
+		m.ID = 10
 	case "Ready":
 		addres = config.ServerAddr + "/ready/tg/" + strconv.Itoa(int(update.CallbackQuery.Message.Chat.ID))
 
@@ -97,6 +105,7 @@ func callbackhandler(bot *tgbotapi.BotAPI,
 	defer resp.Body.Close()
 
 	logger.Info(resp.Status)
+	logger.Info(resp.Header)
 
 	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "Add good")
 	bot.Send(msg)
