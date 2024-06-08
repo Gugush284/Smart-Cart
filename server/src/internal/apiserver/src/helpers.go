@@ -1,9 +1,7 @@
 package apiserver
 
 import (
-	"crypto/rand"
 	"encoding/json"
-	"math/big"
 	"net/http"
 )
 
@@ -18,22 +16,36 @@ func (s *server) respond(w http.ResponseWriter, r *http.Request, code int, data 
 	}
 }
 
-func Random(cin int) int {
-	var pack int
-	n, err := rand.Int(rand.Reader, big.NewInt(int64(cin)))
-	if err != nil {
-		pack = 0
-	} else {
-		pack = int(n.Int64())
+func Alg(req [][]int, g []good, p []pack, s *server) [][]int {
+
+	for j := 0; j < len(g)-1; j++ {
+		var swap good
+		f := 0
+
+		for i := 0; i < len(g)-j-1; i++ {
+			if g[i].weight > g[i+1].weight {
+				swap = g[i]
+				g[i] = g[i+1]
+				g[i+1] = swap
+
+				f = 1
+			}
+		}
+
+		if f == 0 {
+			break
+		}
 	}
 
-	return pack
-}
+	s.Logger.Debug(g)
 
-func Alg(req [][]int, good int, amount int) [][]int {
-	pack := (Random(1000) % 2) + 1
-
-	req = append(req, []int{pack, good, amount})
+	for j := 0; j < len(p); j++ {
+		for i := len(g) - 1; i > -1; i-- {
+			for z := g[i].amount - j; z > 0; z -= len(p) {
+				req = append(req, []int{p[j].id, g[i].id})
+			}
+		}
+	}
 
 	return req
 }

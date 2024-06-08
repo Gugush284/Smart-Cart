@@ -16,6 +16,11 @@ var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardButtonData("3", "3"),
 	),
 	tgbotapi.NewInlineKeyboardRow(
+		tgbotapi.NewInlineKeyboardButtonData("4", "4"),
+		tgbotapi.NewInlineKeyboardButtonData("5", "5"),
+		tgbotapi.NewInlineKeyboardButtonData("6", "6"),
+	),
+	tgbotapi.NewInlineKeyboardRow(
 		tgbotapi.NewInlineKeyboardButtonData("Ready", "Ready"),
 	),
 )

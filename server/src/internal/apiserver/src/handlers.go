@@ -129,11 +129,18 @@ func (s *server) Ready() http.HandlerFunc {
 		}
 		if str != -1 {
 			if s.orders[str].ready {
-				for i := 0; i < len(s.orders[str].item); i++ {
-					req = Alg(req, s.orders[str].item[i].amount, s.orders[str].item[i].id)
+				p := []pack{
+					{weight: 0, id: 1},
+					{weight: 0, id: 2},
 				}
 
+				req = Alg(req, s.orders[str].item, p, s)
+
+				s.Logger.Info(req)
+
 				s.respond(w, r, http.StatusOK, req)
+
+				return
 
 				//FIX delete order
 			}
@@ -146,13 +153,56 @@ func (s *server) Ready() http.HandlerFunc {
 func (s *server) GetUsers() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var id []int
+		flag := 5
 
 		for i := 0; i < len(s.orders); i++ {
 			if s.orders[i].ready {
 				id = append(id, s.orders[i].id)
+				flag--
+			}
+
+			if flag < 1 {
+				break
 			}
 		}
 
 		s.respond(w, r, http.StatusFound, id)
+	})
+}
+
+func (s *server) Delete() http.HandlerFunc {
+	s.Logger.Debug("delete")
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		key := strings.ReplaceAll(r.URL.Path, "/del/", "")
+
+		id, err := strconv.Atoi(key)
+		if err != nil {
+			s.Err(w, r, http.StatusInternalServerError, err)
+			s.Logger.Error(err)
+			return
+		}
+
+		s.Logger.Debug(key)
+
+		str := -1
+		for i := 0; i < len(s.orders); i++ {
+			if s.orders[i].id == id {
+				str = i
+				break
+			}
+		}
+		if str != -1 {
+			s.orders[str] = s.orders[len(s.orders)-1]
+			s.orders[len(s.orders)-1] = order{}
+			s.orders = s.orders[:len(s.orders)-1]
+
+			s.respond(w, r, http.StatusOK, true)
+
+			return
+		}
+
+		s.respond(w, r, http.StatusBadRequest, false)
 	})
 }

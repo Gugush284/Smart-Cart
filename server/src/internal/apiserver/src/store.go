@@ -1,5 +1,10 @@
 package apiserver
 
+type pack struct {
+	weight float64
+	id     int
+}
+
 type good struct {
 	weight float64
 	id     int
