@@ -129,12 +129,7 @@ func (s *server) Ready() http.HandlerFunc {
 		}
 		if str != -1 {
 			if s.orders[str].ready {
-				p := []pack{
-					{weight: 0, id: 1},
-					{weight: 0, id: 2},
-				}
-
-				req = Alg(req, s.orders[str].item, p, s)
+				req = Alg(req, s.orders[str].item, s)
 
 				s.Logger.Info(req)
 

@@ -16,14 +16,14 @@ func (s *server) respond(w http.ResponseWriter, r *http.Request, code int, data 
 	}
 }
 
-func Alg(req [][]int, g []good, p []pack, s *server) [][]int {
+func Alg(req [][]int, g []good, s *server) [][]int {
 
 	for j := 0; j < len(g)-1; j++ {
 		var swap good
 		f := 0
 
 		for i := 0; i < len(g)-j-1; i++ {
-			if g[i].weight > g[i+1].weight {
+			if g[i].weight < g[i+1].weight {
 				swap = g[i]
 				g[i] = g[i+1]
 				g[i+1] = swap
@@ -39,11 +39,11 @@ func Alg(req [][]int, g []good, p []pack, s *server) [][]int {
 
 	s.Logger.Debug(g)
 
-	for j := 0; j < len(p); j++ {
-		for i := len(g) - 1; i > -1; i-- {
-			for z := g[i].amount - j; z > 0; z -= len(p) {
-				req = append(req, []int{p[j].id, g[i].id})
-			}
+	for i := 0; i < len(g); i++ {
+		if g[i].weight > 2 {
+			req = append(req, []int{1, g[i].id, g[i].amount})
+		} else {
+			req = append(req, []int{2, g[i].id, g[i].amount})
 		}
 	}
 
