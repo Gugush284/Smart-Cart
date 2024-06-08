@@ -10,9 +10,7 @@ import (
 func (s *server) GetGoods() http.HandlerFunc {
 
 	type request struct {
-		First  int `json:"first"`
-		Second int `json:"second"`
-		Third  int `json:"third"`
+		ID int `json:"id"`
 	}
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -26,31 +24,56 @@ func (s *server) GetGoods() http.HandlerFunc {
 		}
 
 		str := -1
-		for i := 0; i < len(cid); i++ {
-			if cid[i].id == id {
+		for i := 0; i < len(s.orders); i++ {
+			if s.orders[i].id == id {
 				str = i
 				break
 			}
 		}
 		if str == -1 {
-			str = len(cid)
-			cid = append(cid, goods{0, 0, 0, false, 0})
-			cid[str].id = id
+			str = len(s.orders)
+			s.orders = append(s.orders, order{item: []good{}, ready: false})
+			s.orders[str].id = id
 		}
 
-		if !cid[str].ready {
+		if !s.orders[str].ready {
 			req := &request{}
+			istr := -1
+			sstr := -1
+
 			if err := json.NewDecoder(r.Body).Decode(req); err != nil {
 				s.Err(w, r, http.StatusBadRequest, err)
 				return
 			}
 
-			cid[str].first += req.First
-			cid[str].second += req.Second
-			cid[str].third += req.Third
+			for i := 0; i < len(s.store); i++ {
+				if s.store[i].id == req.ID {
+					sstr = i
+					break
+				}
+			}
+			if sstr == -1 {
+				s.respond(w, r, http.StatusBadRequest, nil)
+				return
+			}
+
+			for i := 0; i < len(s.orders[str].item); i++ {
+				if s.orders[str].item[i].id == req.ID {
+					istr = i
+					break
+				}
+			}
+
+			if istr == -1 {
+				istr = len(s.orders[str].item)
+				s.orders[str].item = append(s.orders[str].item, s.store[sstr])
+				s.orders[str].item[istr].amount = 0
+			}
+
+			s.orders[str].item[istr].amount += 1
 		}
 
-		s.Logger.Info(cid[str])
+		s.Logger.Info(s.orders[str])
 
 		s.respond(w, r, http.StatusAccepted, nil)
 	})
@@ -68,17 +91,17 @@ func (s *server) ReadyTG() http.HandlerFunc {
 		}
 
 		str := -1
-		for i := 0; i < len(cid); i++ {
-			if cid[i].id == id {
+		for i := 0; i < len(s.orders); i++ {
+			if s.orders[i].id == id {
 				str = i
 				break
 			}
 		}
 		if str != -1 {
-			cid[str].ready = true
+			s.orders[str].ready = true
 		}
 
-		s.Logger.Info(cid[str])
+		s.Logger.Info(s.orders[str])
 
 		s.respond(w, r, http.StatusAccepted, nil)
 	})
@@ -98,17 +121,17 @@ func (s *server) Ready() http.HandlerFunc {
 		}
 
 		str := -1
-		for i := 0; i < len(cid); i++ {
-			if cid[i].id == id {
+		for i := 0; i < len(s.orders); i++ {
+			if s.orders[i].id == id {
 				str = i
 				break
 			}
 		}
 		if str != -1 {
-			if cid[str].ready {
-				req = Alg(req, 1, cid[str].first)
-				req = Alg(req, 2, cid[str].second)
-				req = Alg(req, 3, cid[str].third)
+			if s.orders[str].ready {
+				for i := 0; i < len(s.orders[str].item); i++ {
+					req = Alg(req, s.orders[str].item[i].amount, s.orders[str].item[i].id)
+				}
 
 				s.respond(w, r, http.StatusOK, req)
 
@@ -124,9 +147,9 @@ func (s *server) GetUsers() http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var id []int
 
-		for i := 0; i < len(cid); i++ {
-			if cid[i].ready {
-				id = append(id, cid[i].id)
+		for i := 0; i < len(s.orders); i++ {
+			if s.orders[i].ready {
+				id = append(id, s.orders[i].id)
 			}
 		}
 

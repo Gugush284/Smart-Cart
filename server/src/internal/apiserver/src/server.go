@@ -10,12 +10,16 @@ import (
 type server struct {
 	router *mux.Router
 	Logger *logrus.Logger
+	store  []good
+	orders []order
 }
 
 func NewServer() *server {
 	s := &server{
 		router: mux.NewRouter(),
 		Logger: logrus.New(),
+		store:  StartStore(),
+		orders: []order{},
 	}
 
 	s.configureRouter()

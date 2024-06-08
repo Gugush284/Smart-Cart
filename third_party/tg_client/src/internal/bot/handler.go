@@ -37,9 +37,7 @@ func callbackhandler(bot *tgbotapi.BotAPI,
 	config *configs.Config,
 ) {
 	type message struct {
-		First  int `json:"first"`
-		Second int `json:"second"`
-		Third  int `json:"third"`
+		ID int `json:"id"`
 	}
 
 	var m message
@@ -50,17 +48,11 @@ func callbackhandler(bot *tgbotapi.BotAPI,
 
 	switch callback.Text {
 	case "1":
-		m.First = 1
-		m.Second = 0
-		m.Third = 0
+		m.ID = 1
 	case "2":
-		m.First = 0
-		m.Second = 1
-		m.Third = 0
+		m.ID = 2
 	case "3":
-		m.First = 0
-		m.Second = 0
-		m.Third = 1
+		m.ID = 3
 	case "Ready":
 		addres = config.ServerAddr + "/ready/tg/" + strconv.Itoa(int(update.CallbackQuery.Message.Chat.ID))
 
