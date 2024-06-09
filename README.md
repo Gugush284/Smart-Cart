@@ -11,7 +11,7 @@ Client - deploy tg bot
 
 Device - must be deployed on the cart device
 ## Description
-Smart cart is a device for speeding up the assembly of orders. This is achieved by distributing products into packages at the product collection stage. 
+Smart cart is a device for speeding up the assembly of orders. This is achieved by distributing products into packages at the product collection stage. The system itself determines the order of product assembly and the number of the appropriate package. There are plans to improve the algorithm, taking into account the route of the order collector.
 
 Project consists of three parts: server, ordering application (TG bot for demonstration) and cart application.
 
