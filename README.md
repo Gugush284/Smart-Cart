@@ -6,7 +6,9 @@ make client
 make device
 ```
 Server - deploy server
+
 Client - deploy tg bot
+
 Device - must be deployed on the cart device
 ## Description
 Smart cart is a device for speeding up the assembly of orders. This is achieved by distributing products into packages at the product collection stage. 
